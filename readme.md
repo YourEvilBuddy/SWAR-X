@@ -7,7 +7,7 @@ Visit projectsite here: https://github.com/wildicedemon/SWAR-X
 
 ## Warning
 The bot in this repository is experimental. 
-Please visit the link mentioned above and get the original script!
+Please visit the link mentioned above and get the original script if you don't know what you are doing!
 
 ## More information
 Read more: http://ankulua.boards.net/thread/291/summoner-swarx-fodder-swapping-evaluation
