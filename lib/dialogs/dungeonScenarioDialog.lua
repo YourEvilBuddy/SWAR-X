@@ -39,8 +39,11 @@ spinnerRaidReturn = {
     "Wind Beast"
 }
 spinnerLevel = {"1","2","3","4","5","6","7","8","9","10" }
-spinnerDiff = {"Normal","Hard","Hell"}
+spinnerDiff = {"Normal","Hard","Hell" }
 spinnerTOA = {"Normal", "Hard" }
+spinnerArenaCheckFreq = {"60","90","120","150","180" }
+spinnerMaxNrEnemies = {"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15" }
+spinnerMaxAvgLvlEnemies = {"50","20","30","40","10" }
 
 -- GUI
 addTextView("------------------------------Area Farm Configuration---------------------------------")newRow()
@@ -59,9 +62,9 @@ addTextView("  ") newRow()
 
 addTextView("------------------------------Arena Configuration-----------------------------------")newRow()
 addCheckBox("arenaFarm", "Arena Farming", false)newRow()
-addTextView("Arena Check Frequency [Mins]") addEditNumber("arenaTimeFreq", 60) newRow()
-addTextView("Max # of Enemies") addEditNumber("ArenaMaxMon", 1) newRow()
-addTextView("Max Avg Level of Enemies") addEditNumber("ArenaMaxAvgLvl", 40) newRow()
+addTextView("Arena Check Frequency [Mins]: ") addSpinnerIndex("arenaTimeFreq", spinnerArenaCheckFreq, "1") newRow()
+addTextView("Max # of Enemies: ") addSpinnerIndex("ArenaMaxMon", spinnerMaxNrEnemies, "1") newRow()
+addTextView("Max Avg Level of Enemies: ") addSpinnerIndex("ArenaMaxAvgLvl", spinnerMaxAvgLvlEnemies, "1") newRow()
 addTextView("  ") newRow()
 
 addTextView("------------------------------Rune Evaluation Configuration----------------------------")newRow()
