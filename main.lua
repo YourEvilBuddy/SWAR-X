@@ -14,7 +14,7 @@ appUsableSize = getAppUsableScreenSize()
 toast("Auto Detected Resolution: " .. appUsableSize:getX() .. " x " .. appUsableSize:getY())
 Settings:setScriptDimension(true, 2560)
 Settings:setCompareDimension(true, appUsableSize:getX())
-Settings:set("MinSimilarity", 0.90)
+Settings:set("MinSimilarity", 0.84)
 setImmersiveMode(false)
 
 -- Give more details when the script is stopped in all cases
@@ -256,6 +256,7 @@ end
 
 function checkIfMax()
     if debugAll == true then toast("[Function] checkIfMax") end
+	wait(2)
     for i, Reg in ipairs(RegionMatchEXP) do
         if (i == 1) then usePreviousSnap(false) else usePreviousSnap(true) end
         if AMonMax == 1 then click(Location(1320, 720)) break end
@@ -273,11 +274,11 @@ end
 
 function freshFodderLevel(slot)
     if debugAll == true then toast("[Function] freshFodderLevel") end
-    local pFood = Region(slot:getX() + 110, slot:getY() + 185, 130, 100) if debugAll == true then pFood:highlight(2) end
+    local pFood = Region(slot:getX() + 120, slot:getY() + 210, 140, 90) if debugAll == true then pFood:highlight(2) end
     local pFoodClick = Location(pFood:getX(), pFood:getY())
 
     local preMinSimilarity = Settings:get("MinSimilarity")
-    Settings:set("MinSimilarity", 0.65) --works with issues at .7, .75 misses many monsters
+    Settings:set("MinSimilarity", 0.69) --works with issues at .7, .75 misses many monsters
     local lv, lvfound = numberOCRNoFindException(pFood, "LowLv") if debugAll == true then pFood:highlight(tostring(lv), 2) end
     Settings:set("MinSimilarity", preMinSimilarity)
     return lv, lvfound, pFoodClick
@@ -334,6 +335,7 @@ function arenaLevelCheck()
 end
 
 function swapMaxFood()
+	local smallSwipe = true
     if debugAll == true then toast("[Function] swapMaxFood") end
     if find(bigCancel) then
         if AMonMax == 1 then
@@ -342,21 +344,33 @@ function swapMaxFood()
             while not EndofMonL:exists(endOfMonList, 0) do
                 swipe(monListRight, monListLeft)
             end
-            wait(1)
+            wait(1.5)
             while monsterRepCount > 0 do
                 local abort = 20
                 if debugAll == true then NewFodder:highlight(1) end
                 local FodderList = listToTable(NewFodder:findAll(fodderAnchor))
+				if debugAll == true then NewFodder:highlight(1) end
                 local tCount = tableLength(FodderList)
-                if debugAll == true then toast(tCount .. ": Anchors Found") end
+                if debugAll == true then toast(tCount .. " Anchors Found") end
                 for i, slot in ripairs(FodderList) do
                     if (i == 1) then usePreviousSnap(false) else usePreviousSnap(true) end
                     local lv, lvfound, pFoodClick = freshFodderLevel(slot)
                     if lv <= 14 and lvfound == true then click(pFoodClick) monsterRepCount = monsterRepCount - 1
                         if monsterRepCount <= 0 then monsterLevelCheck() end
                         if monsterRepCount <= 0 then break end
-                    elseif i >= tCount then
-                        swipe(monListLeft, monListRight)
+                    elseif i >= tCount - 2 then
+						if smallSwipe == true then 
+							toast("Perfom SmallSwipe")
+							monListLeftShort = monListLeft:offset(240,0)
+							monListRightShort = monListRight:offset(-150,0)
+							swipe(monListLeftShort, monListRightShort)
+							smallSwipe = false
+						elseif smallSwipe == false then
+							swipe(monListLeft, monListRight)
+							toast("Perfom BigSwipe")
+							smallSwipe = true
+						else toast("Unknown Error in swapMaxFood() - swipe")
+						end
                         abort = abort - 1
                         wait(1)
                     end
@@ -713,7 +727,7 @@ function runeSale()
         end
 
     elseif not (buttonRegion:exists(sell)) then
-        if debugAll == true then toast("No Sell Buttion Found") end
+        --if debugAll == true then toast("No Sell Button Found") end
         multiCancel()
     end
 end
@@ -1065,6 +1079,7 @@ function victoryRoutine(choice, stageMatch)
     showStatsSection(true)
     currentIndex = 2
     if victoryDiamondRegFlag == 0 then
+	    wait(4)
         victoryDiamondReg = regionFinder(stageMatch, 2)
         victoryDiamondRegFlag = 1
     end
